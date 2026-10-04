@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Create Donation - LifeBlood{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 bg-light sidebar min-vh-100">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.donors') }}">Donors</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('staff.donations') }}">Donations</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.blood_requests') }}">Blood Requests</a></li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <h2>Create Donation Record</h2>
+            <form method="POST" action="" class="mt-3">
+                {{ form.hidden_tag() }}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form.donor_id.label(class="form-label") }}
+                        {{ form.donor_id(class="form-select") }}
+                        {% for error in form.donor_id.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.donation_date.label(class="form-label") }}
+                        {{ form.donation_date(class="form-control", type="date") }}
+                        {% for error in form.donation_date.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form.blood_group.label(class="form-label") }}
+                        {{ form.blood_group(class="form-select") }}
+                        {% for error in form.blood_group.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.quantity.label(class="form-label") }}
+                        {{ form.quantity(class="form-control", type="number", step="0.1") }}
+                        {% for error in form.quantity.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form.screening_status.label(class="form-label") }}
+                        {{ form.screening_status(class="form-select") }}
+                        {% for error in form.screening_status.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.donation_status.label(class="form-label") }}
+                        {{ form.donation_status(class="form-select") }}
+                        {% for error in form.donation_status.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form.component_type.label(class="form-label") }}
+                        {{ form.component_type(class="form-select") }}
+                        {% for error in form.component_type.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.collection_location.label(class="form-label") }}
+                        {{ form.collection_location(class="form-control") }}
+                        {% for error in form.collection_location.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    {{ form.notes.label(class="form-label") }}
+                    {{ form.notes(class="form-control", rows="3") }}
+                    {% for error in form.notes.errors %}<div class="text-danger">{{ error }}</div>{% endfor %}
+                </div>
+                <button type="submit" class="btn btn-primary">Create Donation</button>
+            </form>
+        </main>
+    </div>
+</div>
+{% endblock %}

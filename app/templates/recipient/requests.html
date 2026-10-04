@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}My Requests - LifeBlood{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 bg-light sidebar min-vh-100">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('recipient.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('recipient.profile') }}">My Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('recipient.request_blood') }}">Request Blood</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('recipient.requests') }}">My Requests</a></li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+            <h2>My Blood Requests</h2>
+            {% if requests %}
+                <table class="table table-striped mt-3">
+                    <thead><tr><th>Blood Group</th><th>Units</th><th>Urgency</th><th>Status</th><th>Required Date</th></tr></thead>
+                    <tbody>
+                        {% for r in requests %}
+                            <tr><td>{{ r.required_blood_group }}</td><td>{{ r.units_required }}</td><td>{{ r.urgency.value }}</td><td>{{ r.status.value }}</td><td>{{ r.required_date.strftime('%d-%b-%Y') }}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No blood requests yet.</p>
+            {% endif %}
+        </main>
+    </div>
+</div>
+{% endblock %}

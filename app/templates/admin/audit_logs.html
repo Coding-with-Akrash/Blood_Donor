@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Audit Logs - LifeBlood{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 bg-light sidebar min-vh-100">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.staff') }}">Staff</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.users') }}">Users</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('admin.audit_logs') }}">Audit Logs</a></li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+            <h2>Audit Logs</h2>
+            <table class="table table-striped mt-3">
+                <thead><tr><th>User</th><th>Action</th><th>Entity</th><th>Description</th><th>Time</th></tr></thead>
+                <tbody>
+                    {% for log in logs.items %}
+                        <tr><td>{{ log.user.username if log.user else 'System' }}</td><td>{{ log.action }}</td><td>{{ log.entity_type }}</td><td>{{ log.description }}</td><td>{{ log.timestamp.strftime('%d-%b-%Y %H:%M') }}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination">
+                    {% for page in logs.iter_pages() %}
+                        {% if page %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </nav>
+        </main>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{% block title %}Register as Donor - LifeBlood{% endblock %}
+{% block topbar %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block head %}
+<style>
+    .form-section {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        border-left: 4px solid #dc3545;
+    }
+    .form-section h5 {
+        color: #dc3545;
+        margin-bottom: 15px;
+    }
+    .progress-bar-custom {
+        height: 8px;
+        border-radius: 4px;
+        background: #e9ecef;
+    }
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #dc3545, #c82333);
+        border-radius: 4px;
+        transition: width 0.3s;
+    }
+</style>
+{% endblock %}
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white py-3">
+                    <h3 class="mb-0 text-center">Donor Registration</h3>
+                    <p class="text-center mb-0 mt-2 opacity-75">Join our community of life-savers</p>
+                </div>
+                <div class="card-body p-4">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    <form method="POST" action="">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="form-section">
+                            <h5><i class="fas fa-user-circle me-2"></i>Account Information</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Username <span class="text-danger">*</span></label>
+                                    {{ form.username(class="form-control", placeholder="Choose a username") }}
+                                    {% for error in form.username.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email <span class="text-danger">*</span></label>
+                                    {{ form.email(class="form-control", placeholder="your@email.com") }}
+                                    {% for error in form.email.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Password <span class="text-danger">*</span></label>
+                                    {{ form.password(class="form-control", placeholder="Min. 6 characters") }}
+                                    {% for error in form.password.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                                    {{ form.confirm_password(class="form-control", placeholder="Repeat password") }}
+                                    {% for error in form.confirm_password.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h5><i class="fas fa-id-card me-2"></i>Personal Information</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Full Name <span class="text-danger">*</span></label>
+                                    {{ form.full_name(class="form-control", placeholder="John Doe") }}
+                                    {% for error in form.full_name.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                                    {{ form.date_of_birth(class="form-control", type="date") }}
+                                    {% for error in form.date_of_birth.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Gender <span class="text-danger">*</span></label>
+                                    {{ form.gender(class="form-select") }}
+                                    {% for error in form.gender.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+                                    {{ form.phone(class="form-control", placeholder="03XXXXXXXXX") }}
+                                    {% for error in form.phone.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">City <span class="text-danger">*</span></label>
+                                    {{ form.city(class="form-control", placeholder="Your city") }}
+                                    {% for error in form.city.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Emergency Contact</label>
+                                    {{ form.emergency_contact(class="form-control", placeholder="03XXXXXXXXX") }}
+                                    {% for error in form.emergency_contact.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Address</label>
+                                {{ form.address(class="form-control", placeholder="Your address") }}
+                                {% for error in form.address.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h5><i class="fas fa-tint me-2"></i>Blood Information</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Blood Group <span class="text-danger">*</span></label>
+                                    {{ form.blood_group(class="form-select") }}
+                                    {% for error in form.blood_group.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Rh Factor <span class="text-danger">*</span></label>
+                                    {{ form.rh_factor(class="form-select") }}
+                                    {% for error in form.rh_factor.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Weight (kg)</label>
+                                    {{ form.weight(class="form-control", type="number", step="0.1", placeholder="e.g. 70") }}
+                                    {% for error in form.weight.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Height (cm)</label>
+                                    {{ form.height(class="form-control", type="number", step="0.1", placeholder="e.g. 175") }}
+                                    {% for error in form.height.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Last Donation Date</label>
+                                {{ form.last_donation_date(class="form-control", type="date") }}
+                                {% for error in form.last_donation_date.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h5><i class="fas fa-clipboard-check me-2"></i>Medical Screening</h5>
+                            <p class="text-muted small mb-3">Please answer the following questions truthfully. This helps us determine your eligibility.</p>
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        {{ form.not_feeling_healthy(class="form-check-input") }}
+                                        <label class="form-check-label">{{ form.not_feeling_healthy.label.text }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        {{ form.recent_surgery(class="form-check-input") }}
+                                        <label class="form-check-label">{{ form.recent_surgery.label.text }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        {{ form.on_medication(class="form-check-input") }}
+                                        <label class="form-check-label">{{ form.on_medication.label.text }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        {{ form.medical_condition(class="form-check-input") }}
+                                        <label class="form-check-label">{{ form.medical_condition.label.text }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        {{ form.infections_fever(class="form-check-input") }}
+                                        <label class="form-check-label">{{ form.infections_fever.label.text }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        {{ form.recent_vaccination(class="form-check-input") }}
+                                        <label class="form-check-label">{{ form.recent_vaccination.label.text }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-user-plus me-2"></i>Create Donor Account
+                            </button>
+                        </div>
+                        <p class="text-center mt-3 text-muted">
+                            Already have an account? <a href="{{ url_for('auth.login') }}">Login here</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

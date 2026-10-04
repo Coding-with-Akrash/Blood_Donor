@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Users - LifeBlood{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 bg-light sidebar min-vh-100">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.staff') }}">Staff</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('admin.users') }}">Users</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.audit_logs') }}">Audit Logs</a></li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <h2>User Management</h2>
+            <form method="GET" action="" class="row g-3 mb-3">
+                <div class="col-auto">
+                    <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ search }}">
+                </div>
+                <div class="col-auto">
+                    <select class="form-select" name="role">
+                        <option value="">All Roles</option>
+                        {% for r in ['donor', 'recipient', 'staff', 'admin'] %}
+                            <option value="{{ r }}" {% if role == r %}selected{% endif %}>{{ r }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </form>
+            <table class="table table-striped">
+                <thead><tr><th>Username</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody>
+                    {% for u in users.items %}
+                        <tr><td>{{ u.username }}</td><td>{{ u.email }}</td><td>{{ u.role.value }}</td><td>{{ 'Active' if u.is_active else 'Inactive' }}</td><td>
+                            <form method="POST" action="{{ url_for('admin.toggle_user_active', user_id=u.id) }}" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-warning">{{ 'Deactivate' if u.is_active else 'Activate' }}</button>
+                            </form>
+                        </td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination">
+                    {% for page in users.iter_pages() %}
+                        {% if page %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page }}&search={{ search }}&role={{ role }}">{{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </nav>
+        </main>
+    </div>
+</div>
+{% endblock %}

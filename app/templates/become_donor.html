@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Become a Donor - LifeBlood{% endblock %}
+{% block body %}
+<div class="container py-5">
+    <h1>Become a Donor</h1>
+    <p class="lead">Join our community of life-savers. Register as a donor today.</p>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Why Donate Blood?</h3>
+            <ul>
+                <li>Save up to 3 lives with one donation</li>
+                <li>Regular donation reduces heart disease risk</li>
+                <li>Free health check-up</li>
+                <li>Burn calories</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h3>Eligibility Requirements</h3>
+            <ul>
+                <li>Age: 18-65 years</li>
+                <li>Weight: Minimum 50 kg</li>
+                <li>Hemoglobin: Minimum 12.5 g/dL</li>
+                <li>No chronic diseases</li>
+            </ul>
+        </div>
+    </div>
+    <a href="{{ url_for('auth.register_donor') }}" class="btn btn-primary btn-lg mt-4">Register Now</a>
+</div>
+{% endblock %}

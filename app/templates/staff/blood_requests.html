@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Blood Requests - LifeBlood{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 bg-light sidebar min-vh-100">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.donors') }}">Donors</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.donations') }}">Donations</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('staff.blood_requests') }}">Blood Requests</a></li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <h2>Blood Requests</h2>
+            <form method="GET" action="" class="row g-3 mb-3">
+                <div class="col-auto">
+                    <select class="form-select" name="status">
+                        <option value="">All Status</option>
+                        {% for s in ['Pending', 'Under Review', 'Approved', 'Searching for Donor', 'Donor Found', 'Fulfilled', 'Cancelled', 'Rejected'] %}
+                            <option value="{{ s }}" {% if status == s %}selected{% endif %}>{{ s }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <select class="form-select" name="urgency">
+                        <option value="">All Urgency</option>
+                        {% for u in ['Normal', 'Urgent', 'Critical'] %}
+                            <option value="{{ u }}" {% if urgency == u %}selected{% endif %}>{{ u }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </form>
+            <table class="table table-striped">
+                <thead><tr><th>Recipient</th><th>Blood Group</th><th>Units</th><th>Urgency</th><th>Status</th><th>Required Date</th><th>Actions</th></tr></thead>
+                <tbody>
+                    {% for r in requests.items %}
+                        <tr><td>{{ r.recipient.full_name }}</td><td>{{ r.required_blood_group }}</td><td>{{ r.units_required }}</td><td>{{ r.urgency.value }}</td><td>{{ r.status.value }}</td><td>{{ r.required_date.strftime('%d-%b-%Y') }}</td><td><a href="{{ url_for('staff.blood_request_detail', request_id=r.id) }}" class="btn btn-sm btn-primary">View</a></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination">
+                    {% for page in requests.iter_pages() %}
+                        {% if page %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page }}&status={{ status }}&urgency={{ urgency }}">{{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </nav>
+        </main>
+    </div>
+</div>
+{% endblock %}

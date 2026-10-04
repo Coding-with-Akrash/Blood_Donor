@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}Register as Recipient - LifeBlood{% endblock %}
+{% block topbar %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block head %}
+<style>
+    .form-section {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        border-left: 4px solid #0d6efd;
+    }
+    .form-section h5 {
+        color: #0d6efd;
+        margin-bottom: 15px;
+    }
+</style>
+{% endblock %}
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white py-3">
+                    <h3 class="mb-0 text-center">Recipient Registration</h3>
+                    <p class="text-center mb-0 mt-2 opacity-75">Request blood when you need it</p>
+                </div>
+                <div class="card-body p-4">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    <form method="POST" action="">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="form-section">
+                            <h5><i class="fas fa-user-circle me-2"></i>Account Information</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Username <span class="text-danger">*</span></label>
+                                    {{ form.username(class="form-control", placeholder="Choose a username") }}
+                                    {% for error in form.username.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email <span class="text-danger">*</span></label>
+                                    {{ form.email(class="form-control", placeholder="your@email.com") }}
+                                    {% for error in form.email.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Password <span class="text-danger">*</span></label>
+                                    {{ form.password(class="form-control", placeholder="Min. 6 characters") }}
+                                    {% for error in form.password.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                                    {{ form.confirm_password(class="form-control", placeholder="Repeat password") }}
+                                    {% for error in form.confirm_password.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h5><i class="fas fa-id-card me-2"></i>Personal Information</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Full Name <span class="text-danger">*</span></label>
+                                    {{ form.full_name(class="form-control", placeholder="John Doe") }}
+                                    {% for error in form.full_name.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                                    {{ form.date_of_birth(class="form-control", type="date") }}
+                                    {% for error in form.date_of_birth.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Gender <span class="text-danger">*</span></label>
+                                    {{ form.gender(class="form-select") }}
+                                    {% for error in form.gender.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+                                    {{ form.phone(class="form-control", placeholder="03XXXXXXXXX") }}
+                                    {% for error in form.phone.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">City <span class="text-danger">*</span></label>
+                                {{ form.city(class="form-control", placeholder="Your city") }}
+                                {% for error in form.city.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Hospital</label>
+                                {{ form.hospital(class="form-control", placeholder="Hospital name") }}
+                                {% for error in form.hospital.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Emergency Contact</label>
+                                {{ form.emergency_contact(class="form-control", placeholder="03XXXXXXXXX") }}
+                                {% for error in form.emergency_contact.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-user-plus me-2"></i>Create Recipient Account
+                            </button>
+                        </div>
+                        <p class="text-center mt-3 text-muted">
+                            Already have an account? <a href="{{ url_for('auth.login') }}">Login here</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}How It Works - LifeBlood{% endblock %}
+{% block head %}
+<style>
+    .how-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 60px 0;
+    }
+    .step-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: transform 0.2s;
+        height: 100%;
+    }
+    .step-card:hover {
+        transform: translateY(-4px);
+    }
+    .step-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        color: white;
+        background: linear-gradient(135deg, #dc3545, #c82333);
+    }
+</style>
+{% endblock %}
+{% block body %}
+<div class="how-hero">
+    <div class="container text-center">
+        <h1 class="fw-bold">How It Works</h1>
+        <p class="lead mb-0">Four simple steps to save or secure a life.</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="card step-card text-center p-4">
+                <div class="card-body">
+                    <div class="step-icon mx-auto mb-3">1</div>
+                    <h5 class="card-title">Create Account</h5>
+                    <p class="card-text text-muted">Register as a donor or recipient in minutes.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card step-card text-center p-4">
+                <div class="card-body">
+                    <div class="step-icon mx-auto mb-3">2</div>
+                    <h5 class="card-title">Share Details</h5>
+                    <p class="card-text text-muted">Donors add blood info and availability; recipients add request details.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card step-card text-center p-4">
+                <div class="card-body">
+                    <div class="step-icon mx-auto mb-3">3</div>
+                    <h5 class="card-title">Smart Matching</h5>
+                    <p class="card-text text-muted">Staff match compatible donors with verified requests.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card step-card text-center p-4">
+                <div class="card-body">
+                    <div class="step-icon mx-auto mb-3">4</div>
+                    <h5 class="card-title">Save Lives</h5>
+                    <p class="card-text text-muted">Donation happens, lives are saved, and records are updated.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">Need Help Getting Started?</h5>
+                    <p class="text-muted mb-0">If you are new here, start by creating a donor or recipient account. If you are a staff or admin user, use the dashboard tools to review records and manage requests.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

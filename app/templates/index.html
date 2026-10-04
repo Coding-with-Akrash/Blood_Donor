@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block title %}Home - LifeBlood{% endblock %}
+{% block head %}
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 100px 0;
+        text-align: center;
+    }
+    .hero-section h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        line-height: 1.2;
+    }
+    .hero-section .lead {
+        font-size: 1.25rem;
+        opacity: 0.9;
+    }
+    .btn-hero {
+        padding: 14px 28px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 10px;
+        min-width: 180px;
+    }
+    .section-title {
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+    .section-subtitle {
+        color: #6c757d;
+        margin-bottom: 40px;
+    }
+    .info-card {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        transition: transform 0.2s, box-shadow 0.2s;
+        height: 100%;
+    }
+    .info-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 24px rgba(0,0,0,0.1);
+    }
+    .icon-circle {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: white;
+    }
+    .cta-section {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 16px;
+    }
+</style>
+{% endblock %}
+{% block body %}
+<header class="hero-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h1 class="mb-4">Donate Blood<br>Save Lives</h1>
+                <p class="lead mb-5">Connect blood donors with those in need. Every drop counts.</p>
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <a href="{{ url_for('auth.register_donor') }}" class="btn btn-light btn-hero">
+                        <i class="fas fa-hand-holding-medical me-2"></i>Donate Blood
+                    </a>
+                    <a href="{{ url_for('main.find_blood') }}" class="btn btn-outline-light btn-hero">
+                        <i class="fas fa-search me-2"></i>Request Blood
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Why LifeBlood?</h2>
+            <p class="section-subtitle">A simple, safe, and reliable way to manage blood donations and requests.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card info-card text-center p-4">
+                    <div class="card-body">
+                        <div class="icon-circle bg-primary mx-auto mb-3">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h5 class="card-title">Safe & Verified</h5>
+                        <p class="card-text text-muted">Eligibility and request details are reviewed by staff for safer outcomes.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card info-card text-center p-4">
+                    <div class="card-body">
+                        <div class="icon-circle bg-danger mx-auto mb-3">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h5 class="card-title">Fast Matching</h5>
+                        <p class="card-text text-muted">Find compatible donors quickly using blood group, city, and availability.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card info-card text-center p-4">
+                    <div class="card-body">
+                        <div class="icon-circle bg-success mx-auto mb-3">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h5 class="card-title">Private by Design</h5>
+                        <p class="card-text text-muted">Sensitive information is protected with role-based access controls.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="cta-section p-5 text-center">
+            <h2 class="fw-bold mb-3">Get In Touch</h2>
+            <p class="text-muted mb-4">Have questions or need support? We are here to help.</p>
+            <a href="{{ url_for('main.contact') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-phone me-2"></i>Contact Us
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

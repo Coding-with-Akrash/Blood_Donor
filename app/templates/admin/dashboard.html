@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - LifeBlood{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 bg-light sidebar min-vh-100">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.staff') }}">Staff</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.users') }}">Users</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.audit_logs') }}">Audit Logs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('reports.donation_report') }}">Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('reports.donor_report') }}">Donor Report</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('reports.request_report') }}">Request Report</a></li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <h2 class="mb-4">Admin Dashboard</h2>
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <div class="card text-white bg-primary border-0 shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-title">Total Users</h6>
+                            <p class="card-text display-6">{{ total_users }}</p>
+                            <small>All registered accounts</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-success border-0 shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-title">Donors</h6>
+                            <p class="card-text display-6">{{ total_donors }}</p>
+                            <small>Registered donors</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-info border-0 shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-title">Recipients</h6>
+                            <p class="card-text display-6">{{ total_recipients }}</p>
+                            <small>Blood recipients</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-warning border-0 shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-title">Staff</h6>
+                            <p class="card-text display-6">{{ total_staff }}</p>
+                            <small>Active staff members</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <div class="card text-white bg-danger border-0 shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-title">Donations</h6>
+                            <p class="card-text display-6">{{ total_donations }}</p>
+                            <small>Total donation records</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-dark border-0 shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-title">Blood Requests</h6>
+                            <p class="card-text display-6">{{ total_requests }}</p>
+                            <small>Total requests</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-secondary border-0 shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-title">Available Units</h6>
+                            <p class="card-text display-6">{{ available_inventory }}</p>
+                            <small>Blood units in inventory</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Recent Activity</h5>
+                        </div>
+                        <div class="card-body">
+                            {% if recent_activity %}
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>User</th>
+                                                <th>Action</th>
+                                                <th>Entity</th>
+                                                <th>Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for log in recent_activity %}
+                                                <tr>
+                                                    <td>{{ log.user.username if log.user else 'System' }}</td>
+                                                    <td>{{ log.action }}</td>
+                                                    <td>{{ log.entity_type }}</td>
+                                                    <td>{{ log.timestamp.strftime('%d-%b-%Y %H:%M') }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% else %}
+                                <p class="text-muted">No recent activity.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Quick Actions</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-grid gap-2">
+                                <a href="{{ url_for('admin.create_staff') }}" class="btn btn-primary">
+                                    <i class="fas fa-user-plus me-2"></i>Create Staff Account
+                                </a>
+                                <a href="{{ url_for('admin.users') }}" class="btn btn-outline-primary">
+                                    <i class="fas fa-users me-2"></i>Manage Users
+                                </a>
+                                <a href="{{ url_for('admin.audit_logs') }}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-clipboard-list me-2"></i>View Audit Logs
+                                </a>
+                                <a href="{{ url_for('reports.donation_report') }}" class="btn btn-outline-success">
+                                    <i class="fas fa-chart-bar me-2"></i>View Reports
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Recipient Dashboard - LifeBlood{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 bg-light sidebar min-vh-100">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('recipient.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('recipient.profile') }}">My Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('recipient.request_blood') }}">Request Blood</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('recipient.requests') }}">My Requests</a></li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <h2>Recipient Dashboard</h2>
+            <div class="row g-3 mt-2">
+                <div class="col-md-4">
+                    <div class="card text-white bg-primary">
+                        <div class="card-body">
+                            <h5 class="card-title">My Requests</h5>
+                            <p class="card-text display-6">{{ requests|length }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h3 class="mt-4">My Blood Requests</h3>
+            {% if requests %}
+                <table class="table table-striped mt-3">
+                    <thead><tr><th>Blood Group</th><th>Units</th><th>Urgency</th><th>Status</th><th>Required Date</th></tr></thead>
+                    <tbody>
+                        {% for r in requests %}
+                            <tr><td>{{ r.required_blood_group }}</td><td>{{ r.units_required }}</td><td>{{ r.urgency.value }}</td><td>{{ r.status.value }}</td><td>{{ r.required_date.strftime('%d-%b-%Y') }}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No blood requests yet. <a href="{{ url_for('recipient.request_blood') }}">Request Blood</a></p>
+            {% endif %}
+        </main>
+    </div>
+</div>
+{% endblock %}

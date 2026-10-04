@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Donations - LifeBlood{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 bg-light sidebar min-vh-100">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.donors') }}">Donors</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('staff.donations') }}">Donations</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.blood_requests') }}">Blood Requests</a></li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+            <h2>Donation Records</h2>
+            <a href="{{ url_for('staff.create_donation') }}" class="btn btn-primary mb-3">Create Donation</a>
+            <table class="table table-striped">
+                <thead><tr><th>Donor</th><th>Date</th><th>Blood Group</th><th>Quantity</th><th>Status</th></tr></thead>
+                <tbody>
+                    {% for d in donations.items %}
+                        <tr><td>{{ d.donor.full_name }}</td><td>{{ d.donation_date.strftime('%d-%b-%Y') }}</td><td>{{ d.blood_group }}</td><td>{{ d.quantity }}</td><td>{{ d.donation_status.value }}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination">
+                    {% for page in donations.iter_pages() %}
+                        {% if page %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </nav>
+        </main>
+    </div>
+</div>
+{% endblock %}

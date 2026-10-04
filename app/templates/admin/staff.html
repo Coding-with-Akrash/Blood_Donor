@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Staff - LifeBlood{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 bg-light sidebar min-vh-100">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('admin.staff') }}">Staff</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.users') }}">Users</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.audit_logs') }}">Audit Logs</a></li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <h2>Staff Management</h2>
+            <a href="{{ url_for('admin.create_staff') }}" class="btn btn-primary mb-3">Create Staff</a>
+            <table class="table table-striped">
+                <thead><tr><th>Username</th><th>Email</th><th>Status</th><th>Created</th></tr></thead>
+                <tbody>
+                    {% for s in staff_members %}
+                        <tr><td>{{ s.username }}</td><td>{{ s.email }}</td><td>{{ 'Active' if s.is_active else 'Inactive' }}</td><td>{{ s.created_at.strftime('%d-%b-%Y') }}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </main>
+    </div>
+</div>
+{% endblock %}

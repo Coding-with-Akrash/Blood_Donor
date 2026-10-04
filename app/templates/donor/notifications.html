@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Notifications - LifeBlood{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 bg-light sidebar min-vh-100">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('donor.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('donor.profile') }}">My Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('donor.donations') }}">Donation History</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('donor.notifications') }}">Notifications</a></li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+            <h2>Notifications</h2>
+            {% if notifications %}
+                {% for n in notifications %}
+                    <div class="alert alert-{{ 'primary' if n.is_read else 'warning' }}">{{ n.title }} - {{ n.message }}</div>
+                {% endfor %}
+            {% else %}
+                <p>No notifications.</p>
+            {% endif %}
+        </main>
+    </div>
+</div>
+{% endblock %}

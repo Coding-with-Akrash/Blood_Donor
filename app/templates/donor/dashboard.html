@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Donor Dashboard - LifeBlood{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 bg-light sidebar min-vh-100">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('donor.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('donor.profile') }}">My Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('donor.donations') }}">Donation History</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('donor.notifications') }}">Notifications {% if unread_count > 0 %}<span class="badge bg-danger">{{ unread_count }}</span>{% endif %}</a></li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <h2>Donor Dashboard</h2>
+            <div class="row g-3 mt-2">
+                <div class="col-md-3">
+                    <div class="card text-white bg-primary">
+                        <div class="card-body">
+                            <h5 class="card-title">Blood Group</h5>
+                            <p class="card-text display-6">{{ profile.blood_group }}{{ profile.rh_factor }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-success">
+                        <div class="card-body">
+                            <h5 class="card-title">Eligibility</h5>
+                            <p class="card-text">{{ profile.eligibility_status.value }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-info">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Donations</h5>
+                            <p class="card-text display-6">{{ total_donations }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-warning">
+                        <div class="card-body">
+                            <h5 class="card-title">Last Donation</h5>
+                            <p class="card-text">{{ profile.last_donation_date.strftime('%d-%b-%Y') if profile.last_donation_date else 'Never' }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Recent Donations</div>
+                        <div class="card-body">
+                            {% if donations %}
+                                <table class="table">
+                                    <thead><tr><th>Date</th><th>Status</th></tr></thead>
+                                    <tbody>
+                                        {% for d in donations %}
+                                            <tr><td>{{ d.donation_date.strftime('%d-%b-%Y') }}</td><td>{{ d.donation_status.value }}</td></tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <p>No donations yet.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Blood Requests Matching Your Group</div>
+                        <div class="card-body">
+                            {% if compatible_requests %}
+                                {% for req in compatible_requests %}
+                                    <div class="alert alert-info">{{ req.required_blood_group }} - {{ req.city }} - {{ req.urgency.value }}</div>
+                                {% endfor %}
+                            {% else %}
+                                <p>No matching requests at this time.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Blood Compatibility - LifeBlood{% endblock %}
+{% block body %}
+<div class="container py-5">
+    <h1>Blood Compatibility</h1>
+    <div class="alert alert-warning">
+        <i class="fas fa-exclamation-triangle"></i> This information is for educational purposes only. Actual blood transfusion decisions must be made by qualified medical professionals using proper cross-matching procedures.
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">Red Blood Cell Donation Compatibility</div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead><tr><th>Blood Type</th><th>Can Donate To</th></tr></thead>
+                        <tbody>
+                            <tr><td>O-</td><td>All types</td></tr>
+                            <tr><td>O+</td><td>O+, A+, B+, AB+</td></tr>
+                            <tr><td>A-</td><td>A-, A+, AB-, AB+</td></tr>
+                            <tr><td>A+</td><td>A+, AB+</td></tr>
+                            <tr><td>B-</td><td>B-, B+, AB-, AB+</td></tr>
+                            <tr><td>B+</td><td>B+, AB+</td></tr>
+                            <tr><td>AB-</td><td>AB-, AB+</td></tr>
+                            <tr><td>AB+</td><td>AB+ only</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-danger text-white">Plasma Compatibility</div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead><tr><th>Blood Type</th><th>Can Receive Plasma From</th></tr></thead>
+                        <tbody>
+                            <tr><td>AB+</td><td>All types</td></tr>
+                            <tr><td>AB-</td><td>AB-, A-, B-, O-</td></tr>
+                            <tr><td>A+</td><td>A+, A-, O+, O-</td></tr>
+                            <tr><td>A-</td><td>A-, O-</td></tr>
+                            <tr><td>B+</td><td>B+, B-, O+, O-</td></tr>
+                            <tr><td>B-</td><td>B-, O-</td></tr>
+                            <tr><td>O+</td><td>O+, O-</td></tr>
+                            <tr><td>O-</td><td>O- only</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

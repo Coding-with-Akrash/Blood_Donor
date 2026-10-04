@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Donor Report - LifeBlood{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 bg-light sidebar min-vh-100">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.donors') }}">Donors</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('reports.donor_report') }}">Donor Report</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('reports.request_report') }}">Request Report</a></li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+            <h2>Donor Report</h2>
+            <div class="row g-3 mt-2">
+                <div class="col-md-3">
+                    <div class="card text-white bg-primary">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Donors</h5>
+                            <p class="card-text display-6">{{ total_donors }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-success">
+                        <div class="card-body">
+                            <h5 class="card-title">Eligible</h5>
+                            <p class="card-text display-6">{{ eligible }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-warning">
+                        <div class="card-body">
+                            <h5 class="card-title">Pending Review</h5>
+                            <p class="card-text display-6">{{ pending }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-danger">
+                        <div class="card-body">
+                            <h5 class="card-title">Deferred</h5>
+                            <p class="card-text display-6">{{ deferred }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}

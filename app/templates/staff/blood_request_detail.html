@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Request Details - LifeBlood{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 bg-light sidebar min-vh-100">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.donors') }}">Donors</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.donations') }}">Donations</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('staff.blood_requests') }}">Blood Requests</a></li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <h2>Blood Request #{{ request.id }}</h2>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <p><strong>Recipient:</strong> {{ request.recipient.full_name }}</p>
+                    <p><strong>Blood Group:</strong> {{ request.required_blood_group }}</p>
+                    <p><strong>Units Required:</strong> {{ request.units_required }}</p>
+                    <p><strong>Hospital:</strong> {{ request.hospital }}</p>
+                    <p><strong>City:</strong> {{ request.city }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Urgency:</strong> {{ request.urgency.value }}</p>
+                    <p><strong>Status:</strong> {{ request.status.value }}</p>
+                    <p><strong>Required Date:</strong> {{ request.required_date.strftime('%d-%b-%Y') }}</p>
+                    <p><strong>Notes:</strong> {{ request.notes or 'None' }}</p>
+                </div>
+            </div>
+            <h4 class="mt-4">Update Status</h4>
+            <form method="POST" action="{{ url_for('staff.update_request_status', request_id=request.id) }}" class="row g-3">
+                <div class="col-auto">
+                    <select class="form-select" name="status">
+                        {% for s in ['Pending', 'Under Review', 'Approved', 'Searching for Donor', 'Donor Found', 'Fulfilled', 'Cancelled', 'Rejected'] %}
+                            <option value="{{ s }}" {% if request.status.value == s %}selected{% endif %}>{{ s }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+{% endblock %}

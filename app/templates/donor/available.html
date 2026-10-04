@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}Find Donors - LifeBlood{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 bg-light sidebar min-vh-100">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    {% if current_user.role.value == 'donor' %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('donor.dashboard') }}">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('donor.profile') }}">My Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('donor.donations') }}">Donation History</a></li>
+                    {% elif current_user.role.value == 'recipient' %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('recipient.dashboard') }}">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('recipient.profile') }}">My Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('recipient.request_blood') }}">Request Blood</a></li>
+                    {% elif current_user.role.value in ['staff', 'admin'] %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.dashboard') }}">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.donors') }}">Donors</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.blood_requests') }}">Blood Requests</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <h2 class="mb-4">Find Available Donors</h2>
+
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <form method="GET" action="" class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Blood Group</label>
+                            <select class="form-select" name="blood_group">
+                                <option value="">All Blood Groups</option>
+                                {% for g in blood_groups %}
+                                    <option value="{{ g }}" {% if selected_blood == g %}selected{% endif %}>{{ g }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">City</label>
+                            <input type="text" class="form-control" name="city" placeholder="Enter city" value="{{ selected_city }}">
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search me-2"></i>Search
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Available Donors ({{ donors|length }})</h5>
+                </div>
+                <div class="card-body">
+                    {% if donors %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Blood Group</th>
+                                        <th>City</th>
+                                        <th>Eligibility</th>
+                                        <th>Availability</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for d in donors %}
+                                        <tr>
+                                            <td>{{ d.full_name }}</td>
+                                            <td>
+                                                <span class="badge bg-danger">{{ d.blood_group }}</span>
+                                            </td>
+                                            <td>{{ d.city }}</td>
+                                            <td>
+                                                {% if d.eligibility_status.value == 'Eligible' %}
+                                                    <span class="badge bg-success">{{ d.eligibility_status.value }}</span>
+                                                {% else %}
+                                                    <span class="badge bg-warning text-dark">{{ d.eligibility_status.value }}</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if d.availability_status == 'Available' %}
+                                                    <span class="badge bg-success">Available</span>
+                                                {% else %}
+                                                    <span class="badge bg-secondary">Not Available</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if current_user.role.value in ['staff', 'admin'] %}
+                                                    <a href="{{ url_for('staff.donor_detail', donor_id=d.id) }}" class="btn btn-sm btn-primary">View Details</a>
+                                                {% else %}
+                                                    <span class="text-muted small">Contact staff for info</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No donors found matching your criteria.</p>
+                            <p class="text-muted small">Try adjusting your search filters.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}

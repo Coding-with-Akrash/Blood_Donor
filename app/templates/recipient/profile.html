@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}My Profile - LifeBlood{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 bg-light sidebar min-vh-100">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('recipient.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('recipient.profile') }}">My Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('recipient.request_blood') }}">Request Blood</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('recipient.requests') }}">My Requests</a></li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <h2>My Profile</h2>
+            <form method="POST" action="">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" name="full_name" value="{{ profile.full_name }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Phone</label>
+                        <input type="text" class="form-control" name="phone" value="{{ profile.phone }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">City</label>
+                        <input type="text" class="form-control" name="city" value="{{ profile.city }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Hospital</label>
+                        <input type="text" class="form-control" name="hospital" value="{{ profile.hospital }}">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Emergency Contact</label>
+                    <input type="text" class="form-control" name="emergency_contact" value="{{ profile.emergency_contact }}">
+                </div>
+                <button type="submit" class="btn btn-primary">Update Profile</button>
+            </form>
+        </main>
+    </div>
+</div>
+{% endblock %}

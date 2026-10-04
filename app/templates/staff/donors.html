@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Donors - LifeBlood{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 bg-light sidebar min-vh-100">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('staff.donors') }}">Donors</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.donations') }}">Donations</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('staff.blood_requests') }}">Blood Requests</a></li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <h2>Donors</h2>
+            <form method="GET" action="" class="row g-3 mb-3">
+                <div class="col-auto">
+                    <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ search }}">
+                </div>
+                <div class="col-auto">
+                    <select class="form-select" name="blood_group">
+                        <option value="">All Blood Groups</option>
+                        {% for g in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
+                            <option value="{{ g }}" {% if blood_group == g %}selected{% endif %}>{{ g }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <input type="text" class="form-control" name="city" placeholder="City" value="{{ city }}">
+                </div>
+                <div class="col-auto">
+                    <select class="form-select" name="eligibility">
+                        <option value="">All Status</option>
+                        {% for s in ['Eligible', 'Temporarily Deferred', 'Permanently Deferred', 'Pending Medical Review'] %}
+                            <option value="{{ s }}" {% if eligibility == s %}selected{% endif %}>{{ s }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </form>
+            <table class="table table-striped">
+                <thead><tr><th>Name</th><th>Blood Group</th><th>City</th><th>Eligibility</th><th>Actions</th></tr></thead>
+                <tbody>
+                    {% for d in donors.items %}
+                        <tr><td>{{ d.full_name }}</td><td>{{ d.blood_group }}</td><td>{{ d.city }}</td><td>{{ d.eligibility_status.value }}</td><td><a href="{{ url_for('staff.donor_detail', donor_id=d.id) }}" class="btn btn-sm btn-primary">View</a></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination">
+                    {% for page in donors.iter_pages() %}
+                        {% if page %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page }}&search={{ search }}&blood_group={{ blood_group }}&city={{ city }}&eligibility={{ eligibility }}">{{ page }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </nav>
+        </main>
+    </div>
+</div>
+{% endblock %}

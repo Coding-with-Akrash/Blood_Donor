@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}LifeBlood{% endblock %} - Blood Donation Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+    {% block head %}{% endblock %}
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        .feature-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            border-radius: 15px;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .sidebar {
+            position: fixed;
+            top: 56px;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 48px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
+        }
+        .sidebar .nav-link {
+            font-weight: 500;
+            color: #333;
+            padding: 12px 16px;
+            margin: 2px 8px;
+            border-radius: 8px;
+        }
+        .sidebar .nav-link.active {
+            color: #fff;
+            background: #0d6efd;
+        }
+        .sidebar .nav-link:hover {
+            background: #e9ecef;
+            color: #0d6efd;
+        }
+        main {
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    {% block topbar %}
+    {% if not current_user.is_authenticated %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">
+                <i class="fas fa-heartbeat me-2"></i>LifeBlood
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#publicNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="publicNavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.about') }}">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.how_it_works') }}">How It Works</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.contact') }}">Contact</a></li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light ms-2" href="{{ url_for('auth.login') }}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Login
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+
+    {% if current_user.is_authenticated %}
+        {% if current_user.role.value == 'donor' %}
+            {% include 'layouts/donor_navbar.html' %}
+        {% elif current_user.role.value == 'recipient' %}
+            {% include 'layouts/recipient_navbar.html' %}
+        {% elif current_user.role.value in ['staff', 'admin'] %}
+            {% include 'layouts/staff_navbar.html' %}
+        {% endif %}
+    {% endif %}
+    {% endblock %}
+
+    {% block body %}{% endblock %}
+
+    {% block footer %}
+    {% if not current_user.is_authenticated %}
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2024 LifeBlood. All rights reserved.</p>
+        </div>
+    </footer>
+    {% endif %}
+    {% endblock %}
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
